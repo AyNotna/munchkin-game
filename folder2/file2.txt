@@ -1,1 +1,2 @@
 File in Folder2
+Updated content in Folder2
