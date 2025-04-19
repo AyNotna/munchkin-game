@@ -65,11 +65,16 @@
       <button class="link-button" onclick="goToStep('step-login')">Уже есть аккаунт? Войти</button>
     </div>
 
-    <!-- Авторизация -->
+        <!-- Авторизация -->
     <div class="form-card hidden" id="step-login">
       <h2>Авторизация</h2>
+
       <input type="email" placeholder="Введите свою почту" id="login-email" />
+      <div id="login-email-error" class="error"></div>
+
       <input type="password" placeholder="Введите пароль" id="login-password" />
+      <div id="login-password-error" class="error"></div>
+
       <button id="login-btn">Готово</button>
       <button class="link-button" onclick="goToStep('step-email')">Нет аккаунта? Зарегистрироваться</button>
     </div>
