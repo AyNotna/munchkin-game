@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Регистрация и Авторизация</title>
+  <link rel="stylesheet" href="registr.css" />
+  <style>
+    .hidden { display: none; }
+    .error { color: red; font-size: 0.8rem; margin-top: 4px; }
+    .link-button {
+      background: none;
+      border: none;
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+    input.invalid { border-color: red; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Регистрация -->
+    <div class="form-card" id="step-email">
+      <h2>Регистрация</h2>
+
+      <label>
+        Почта
+        <span class="tooltip-icon" title="Формат: example@mail.ru / .com / .net">?</span>
+      </label>
+      <input type="email" placeholder="Введите свою почту" id="register-email" />
+      <div id="email-error" class="error"></div>
+
+      <label>
+        Пароль
+        <span class="tooltip-icon" title="Минимум 6 символов">?</span>
+      </label>
+      <input type="password" placeholder="Введите пароль" id="register-password" />
+      <div id="password-error" class="error"></div>
+
+      <button id="email-step-next">Готово</button>
+      <button class="link-button" onclick="goToStep('step-login')">Уже есть аккаунт? Войти</button>
+    </div>
+
+    <div class="form-card hidden" id="step-code">
+      <h2>Подтверждение почты</h2>
+      <input type="text" placeholder="Введите код" id="email-code" />
+      <button onclick="goToStep('step-nickname')">Готово</button>
+      <button class="back-button" onclick="goToStep('step-email')">Назад</button>
+    </div>
+
+    <div class="form-card hidden" id="step-nickname">
+      <h2>Создание профиля</h2>
+      <label>
+        Никнейм
+        <span class="tooltip-icon" title="Минимум 3 символа">?</span>
+      </label>
+      <input type="text" placeholder="Введите никнейм" id="nickname" />
+      <div id="nickname-error" class="error"></div>
+
+      <button id="submit-register">Готово</button>
+      <button class="back-button" onclick="goToStep('step-code')">Назад</button>
+      <button class="link-button" onclick="goToStep('step-login')">Уже есть аккаунт? Войти</button>
+    </div>
+
+    <!-- Авторизация -->
+    <div class="form-card hidden" id="step-login">
+      <h2>Авторизация</h2>
+      <input type="email" placeholder="Введите свою почту" id="login-email" />
+      <input type="password" placeholder="Введите пароль" id="login-password" />
+      <button id="login-btn">Готово</button>
+      <button class="link-button" onclick="goToStep('step-email')">Нет аккаунта? Зарегистрироваться</button>
+    </div>
+  </div>
+
+  <script src="registr.js"></script>
+</body>
+</html>

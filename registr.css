@@ -1,0 +1,136 @@
+body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 100px;
+      padding: 0;
+}
+
+.container {
+      width: 100%;
+      max-width: 400px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+}
+
+.hidden {
+      display: none;
+}
+
+input {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s ease;
+}
+
+input.invalid {
+      border-color: #e74c3c;
+}
+
+input:focus {
+      border-color: #3498db;
+}
+
+button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+}
+
+button:hover {
+      background-color: #2980b9;
+}
+
+.back-button {
+      background-color: #95a5a6;
+}
+
+.back-button:hover {
+      background-color: #7f8c8d;
+}
+
+.link {
+      font-size: 14px;
+      color: #3498db;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 5px;
+}
+
+.error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 4px;
+}
+
+/* Tooltip */
+.tooltip-icon {
+      display: inline-block;
+      margin-left: 6px;
+      cursor: help;
+      color: #999;
+      font-weight: bold;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      line-height: 16px;
+      font-size: 12px;
+}
+
+/* Modal */
+.modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+}
+
+.modal.hidden {
+      display: none;
+}
+
+.modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content button {
+      margin-top: 20px;
+      background-color: #2ecc71;
+}
+
+.modal-content button:hover {
+      background-color: #27ae60;
+}
