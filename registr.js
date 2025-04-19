@@ -1,9 +1,10 @@
+// Функция для перехода между шагами
 function goToStep(stepId) {
   document.querySelectorAll('.form-card').forEach(card => card.classList.add('hidden'));
   document.getElementById(stepId).classList.remove('hidden');
 }
 
-// Элементы
+// Элементы для регистрации
 const emailInput = document.getElementById('register-email');
 const passwordInput = document.getElementById('register-password');
 const nicknameInput = document.getElementById('nickname');
@@ -22,7 +23,7 @@ emailStepNextBtn.addEventListener('click', () => {
 
   let valid = true;
 
-  // Email
+  // Валидация email
   const emailRegex = /^[^\s@]+@[^\s@]+\.(ru|com|net|org)$/i;
   if (!emailRegex.test(email)) {
     emailError.textContent = 'Некорректный email (например, user@mail.ru)';
@@ -30,7 +31,7 @@ emailStepNextBtn.addEventListener('click', () => {
     valid = false;
   }
 
-  // Пароль
+  // Валидация пароля
   if (password.length < 6) {
     passwordError.textContent = 'Пароль должен быть минимум 6 символов';
     passwordInput.classList.add('invalid');
@@ -111,13 +112,16 @@ submitBtn.addEventListener('click', async () => {
   }
 });
 
+// Авторизация
 const loginBtn = document.getElementById('login-btn');
 
 loginBtn.addEventListener('click', async () => {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value.trim();
 
-  if (!email || !password) return alert('Введите все поля');
+  if (!email || !password) {
+    return alert('Введите все поля');
+  }
 
   try {
     const response = await fetch('http://localhost:3000/login', {
@@ -127,7 +131,7 @@ loginBtn.addEventListener('click', async () => {
     });
 
     if (response.ok) {
-      window.location.href = 'main.html'; // переадресация
+      window.location.href = 'main.html'; // Переход на главную страницу
     } else {
       alert('Неверная почта или пароль');
     }
