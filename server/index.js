@@ -7,9 +7,8 @@ const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // ← нужно для форм
+app.use(express.urlencoded({ extended: true }));
 
-// Количество раундов для хеширования
 const saltRounds = 10;
 
 // Регистрация
@@ -21,17 +20,14 @@ app.post('/register', async (req, res) => {
   }
 
   try {
-    // Проверка на наличие пользователя с таким email
     const checkUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     if (checkUser.rows.length > 0) {
       return res.status(409).send('Пользователь с такой почтой уже существует');
     }
 
-    // Хеширование пароля
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Вставка нового пользователя в базу
     await pool.query(
       'INSERT INTO users (email, password, nickname) VALUES ($1, $2, $3)',
       [email, hashedPassword, nickname]
@@ -53,17 +49,12 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-    // Поиск пользователя по email
-    const user = await pool.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email]
-    );
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     if (user.rows.length === 0) {
       return res.status(401).send('Неверная почта или пароль');
     }
 
-    // Сравнение введенного пароля с хешированным
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
 
     if (!validPassword) {
@@ -77,7 +68,52 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Запуск сервера
+// ✅ Сохранение персонажа
+app.post('/api/save-character', async (req, res) => {
+  const { email, character } = req.body;
+
+  if (!email || !character) {
+    return res.status(400).send('Email и персонаж обязательны');
+  }
+
+  try {
+    await pool.query(
+      'UPDATE users SET character = $1 WHERE email = $2',
+      [character, email]
+    );
+    res.status(200).send('Персонаж сохранён');
+  } catch (err) {
+    console.error('Ошибка при сохранении персонажа:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
+// ✅ Получение выбранного персонажа
+console.log("Регистрируем маршруты /api/save-character и /api/get-character");
+app.get('/api/get-character', async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).send('Email обязателен');
+  }
+
+  try {
+    const result = await pool.query(
+      'SELECT character FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send('Пользователь не найден');
+    }
+
+    res.json({ character: result.rows[0].character });
+  } catch (err) {
+    console.error('Ошибка при получении персонажа:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Сервер запущен на http://localhost:${PORT}`);
 });

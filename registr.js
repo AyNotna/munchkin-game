@@ -131,7 +131,8 @@ loginBtn.addEventListener('click', async () => {
     });
 
     if (response.ok) {
-      window.location.href = 'main.html'; // Переход на главную страницу
+      localStorage.setItem('userEmail', email); // ✅ Сохраняем email в хранилище
+      window.location.href = 'main.html';       // Переход на главную
     } else {
       alert('Неверная почта или пароль');
     }
@@ -140,3 +141,4 @@ loginBtn.addEventListener('click', async () => {
     console.error(err);
   }
 });
+
