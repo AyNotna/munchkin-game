@@ -1,0 +1,125 @@
+body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+}
+
+.top-bar {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+}
+
+.theme-btn,
+.profile-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+}
+
+.center-card,
+.play-options {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+}
+
+.center-card button,
+.play-options button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+}
+
+.center-card button:hover,
+.play-options button:hover {
+      background: #0056b3;
+}
+
+.hidden {
+      display: none;
+}
+
+/* Выбор персонажа */
+.character-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+}
+
+.character-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+.character-placeholder {
+      width: 150px;
+      height: 200px;
+      background: #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+}
+
+/* Пример для вставки картинки: замени background на background-image */
+/* .character-placeholder.male { */
+/* Здесь можно будет вставить картинку: */
+/* background-image: url('img/male.png'); */
+/* } */
+
+/* .character-placeholder.female { */
+/* Здесь можно будет вставить картинку: */
+/* background-image: url('img/female.png'); */
+/* } */
+
+.rules-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #007bff;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+}
+
+.rules-container {
+      padding: 40px;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      margin-top: 100px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+}
+
+.back-link {
+      display: block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: underline;
+      font-size: 1rem;
+}

@@ -1,11 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=, initial-scale=1.0">
-      <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Главное меню</title>
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-      <h1>qu!</h1>
+  <div class="top-bar">
+    <button class="theme-btn">☀️</button>
+    <button class="profile-btn">👤</button>
+  </div>
+
+  <!-- Выбор персонажа -->
+  <div class="center-card" id="character-select">
+    <h2>Добро пожаловать! Выберите своего персонажа</h2>
+    <div class="character-row">
+      <div class="character-option">
+        <div class="character-placeholder male"></div>
+        <button onclick="selectCharacter('male')">Мужчина</button>
+      </div>
+      <div class="character-option">
+        <div class="character-placeholder female"></div>
+        <button onclick="selectCharacter('female')">Женщина</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Главное меню -->
+  <div class="center-card hidden" id="main-menu">
+    <h1>Добро пожаловать!</h1>
+    <button id="play-btn">Играть</button>
+    <a href="rules.html" class="rules-link">Правила</a>
+  </div>
+
+  <!-- Режимы игры -->
+  <div class="play-options hidden" id="play-options">
+    <h2>Выберите режим</h2>
+    <button>Соло</button>
+    <button>Мультиплеер</button>
+    <button class="back-btn" id="back-to-main">Назад</button>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
