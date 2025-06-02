@@ -29,7 +29,10 @@ const errorBox = document.getElementById('error-box') || createErrorBox();
 let socket = null;
 let currentRoomId = null;
 
+// Инициализация WebSocket (один раз)
 function connectWebSocket() {
+  if (socket && socket.readyState === WebSocket.OPEN) return;
+
   socket = new WebSocket('ws://localhost:3000');
 
   socket.onopen = () => {
@@ -58,7 +61,9 @@ function connectWebSocket() {
         break;
       case 'game-started':
         showError("Игра начинается! 🚀");
-        window.location.href = 'game.html'; // Переход на game.html
+        localStorage.setItem('currentRoomId', data.roomId);
+        localStorage.setItem('playerId', localStorage.getItem('nickname'));
+        window.location.href = 'game.html';
         break;
       case 'error':
         showError(data.message);
@@ -242,5 +247,5 @@ leaveRoomBtn.addEventListener('click', () => {
   showError('');
 });
 
-// === Инициализация ===
+// === Запуск ===
 connectWebSocket();
