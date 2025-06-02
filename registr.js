@@ -1,29 +1,24 @@
-// Функция для перехода между шагами
 function goToStep(stepId) {
   document.querySelectorAll('.form-card').forEach(card => card.classList.add('hidden'));
   document.getElementById(stepId).classList.remove('hidden');
 }
 
-// Элементы для регистрации
 const emailInput = document.getElementById('register-email');
 const passwordInput = document.getElementById('register-password');
 const nicknameInput = document.getElementById('nickname');
 const submitBtn = document.getElementById('submit-register');
 const emailStepNextBtn = document.getElementById('email-step-next');
 
-// Поля ошибок
 const emailError = document.getElementById('email-error');
 const passwordError = document.getElementById('password-error');
 const nicknameError = document.getElementById('nickname-error');
 
-// Валидация Email и Пароля на первой плашке
 emailStepNextBtn.addEventListener('click', () => {
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
   let valid = true;
 
-  // Валидация email
   const emailRegex = /^[^\s@]+@[^\s@]+\.(ru|com|net|org)$/i;
   if (!emailRegex.test(email)) {
     emailError.textContent = 'Некорректный email (например, user@mail.ru)';
@@ -31,7 +26,6 @@ emailStepNextBtn.addEventListener('click', () => {
     valid = false;
   }
 
-  // Валидация пароля
   if (password.length < 6) {
     passwordError.textContent = 'Пароль должен быть минимум 6 символов';
     passwordInput.classList.add('invalid');
@@ -43,7 +37,6 @@ emailStepNextBtn.addEventListener('click', () => {
   }
 });
 
-// Очистка ошибок при вводе
 emailInput.addEventListener('input', () => {
   if (emailInput.classList.contains('invalid')) {
     const email = emailInput.value.trim();
@@ -75,7 +68,6 @@ nicknameInput.addEventListener('input', () => {
   }
 });
 
-// Отправка формы регистрации
 submitBtn.addEventListener('click', async () => {
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
@@ -112,7 +104,6 @@ submitBtn.addEventListener('click', async () => {
   }
 });
 
-// Авторизация
 const loginBtn = document.getElementById('login-btn');
 
 loginBtn.addEventListener('click', async () => {
@@ -131,8 +122,8 @@ loginBtn.addEventListener('click', async () => {
     });
 
     if (response.ok) {
-      localStorage.setItem('userEmail', email); // ✅ Сохраняем email в хранилище
-      window.location.href = 'main.html';       // Переход на главную
+      localStorage.setItem('userEmail', email); 
+      window.location.href = 'main.html';     
     } else {
       alert('Неверная почта или пароль');
     }

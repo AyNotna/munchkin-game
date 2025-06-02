@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игра Манчкин</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0e6d2;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #game-container {
+      display: grid;
+      grid-template-areas:
+        "top top top"
+        "left center right"
+        "bottom bottom bottom";
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 100px 1fr 180px;
+      height: 100%;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    #top-area {
+      grid-area: top;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .deck {
+      width: 100px;
+      height: 140px;
+      background-color: #8b4513;
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #left-player,
+    #right-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff8dc;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      height: 100%;
+    }
+
+    #left-player {
+      grid-area: left;
+    }
+
+    #right-player {
+      grid-area: right;
+    }
+
+    #center-area {
+      grid-area: center;
+      background-color: #fff;
+      border: 2px dashed #888;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #bottom-player {
+      grid-area: bottom;
+      background-color: #fefefe;
+      border: 2px solid #444;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .player-name {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hand {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      width: 80px;
+      height: 120px;
+      background-color: #eee;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+
+    <!-- ВЕРХ: Колоды -->
+    <div id="top-area">
+      <div class="deck" id="door-deck">Двери</div>
+      <div class="deck" id="treasure-deck">Сокровища</div>
+    </div>
+
+    <!-- Левый игрок -->
+    <div id="left-player">
+      <div class="player-name" id="left-player-name">Игрок 1</div>
+      <div class="hand" id="left-player-hand">
+        <!-- Карты -->
+      </div>
+    </div>
+
+    <!-- Правый игрок -->
+    <div id="right-player">
+      <div class="player-name" id="right-player-name">Игрок 2</div>
+      <div class="hand" id="right-player-hand">
+        <!-- Карты -->
+      </div>
+    </div>
+
+    <!-- Центр: игровое поле -->
+    <div id="center-area">
+      <p>Игровое поле / действия / сообщения</p>
+    </div>
+
+    <!-- НИЗ: локальный игрок -->
+    <div id="bottom-player">
+      <div class="player-name" id="bottom-player-name">Вы</div>
+      <div class="hand" id="bottom-player-hand">
+        <!-- Карты игрока -->
+      </div>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

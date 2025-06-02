@@ -58,7 +58,6 @@ body {
       display: none;
 }
 
-/* Выбор персонажа */
 .character-row {
       display: flex;
       justify-content: center;
@@ -82,17 +81,6 @@ body {
       align-items: center;
       justify-content: center;
 }
-
-/* Пример для вставки картинки: замени background на background-image */
-/* .character-placeholder.male { */
-/* Здесь можно будет вставить картинку: */
-/* background-image: url('img/male.png'); */
-/* } */
-
-/* .character-placeholder.female { */
-/* Здесь можно будет вставить картинку: */
-/* background-image: url('img/female.png'); */
-/* } */
 
 .rules-link {
       display: inline-block;
@@ -122,4 +110,16 @@ body {
       color: #007bff;
       text-decoration: underline;
       font-size: 1rem;
+}
+
+.multiplayer-options {
+      margin-top: 20px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.multiplayer-options h3 {
+      margin-bottom: 10px;
 }

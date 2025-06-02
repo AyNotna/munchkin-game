@@ -84,7 +84,6 @@ button:hover {
       margin-bottom: 4px;
 }
 
-/* Tooltip */
 .tooltip-icon {
       display: inline-block;
       margin-left: 6px;
@@ -100,7 +99,6 @@ button:hover {
       font-size: 12px;
 }
 
-/* Modal */
 .modal {
       position: fixed;
       top: 0;

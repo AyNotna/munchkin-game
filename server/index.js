@@ -2,16 +2,159 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const pool = require('./db');
-const app = express();
-const PORT = 3000;
+const http = require('http');
+const WebSocket = require('ws');
 
-app.use(cors());
+const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+const PORT = 3000;
+app.use(cors({
+  origin: 'http://127.0.0.1:5500'
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const saltRounds = 10;
+const rooms = {}; // { roomId: [{ ws, nickname }] }
 
-// Регистрация
+wss.on('connection', (ws) => {
+  ws.on('message', (message) => {
+    let data;
+    try {
+      data = JSON.parse(message);
+    } catch (err) {
+      console.error('❌ Ошибка парсинга JSON:', message);
+      return;
+    }
+
+    const { type, roomId, nickname } = data;
+
+    switch (type) {
+      case 'create-room':
+        if (!roomId || !nickname) {
+          ws.send(JSON.stringify({ type: 'error', message: 'roomId и nickname обязательны' }));
+          return;
+        }
+
+        if (rooms[roomId]) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Комната уже существует' }));
+          return;
+        }
+
+        rooms[roomId] = [{ ws, nickname }];
+        ws.roomId = roomId;
+        ws.nickname = nickname;
+
+        ws.send(JSON.stringify({
+          type: 'room-created',
+          roomId,
+          players: [nickname]
+        }));
+        break;
+
+      case 'join-room':
+        if (!roomId || !nickname) {
+          ws.send(JSON.stringify({ type: 'error', message: 'roomId и nickname обязательны' }));
+          return;
+        }
+
+        if (!rooms[roomId]) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Комната не найдена' }));
+          return;
+        }
+
+        rooms[roomId].push({ ws, nickname });
+        ws.roomId = roomId;
+        ws.nickname = nickname;
+
+        ws.send(JSON.stringify({
+          type: 'joined',
+          roomId,
+          players: rooms[roomId].map(client => client.nickname),
+        }));
+
+        broadcast(roomId, {
+          type: 'user-joined',
+          nickname,
+          players: rooms[roomId].map(client => client.nickname),
+        });
+        break;
+
+      case 'start-game':
+        if (!roomId || !nickname) {
+          ws.send(JSON.stringify({ type: 'error', message: 'roomId и nickname обязательны' }));
+          return;
+        }
+
+        const clients = rooms[roomId];
+        if (!clients) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Комната не найдена' }));
+          return;
+        }
+
+        const creator = clients[0];
+        if (creator.nickname !== nickname) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Только создатель может начать игру' }));
+          return;
+        }
+
+        if (clients.length !== 3) {
+          ws.send(JSON.stringify({ type: 'error', message: 'Для начала игры нужно ровно 3 игрока' }));
+          return;
+        }
+
+        broadcast(roomId, {
+          type: 'game-started',
+        });
+        break;
+
+      case 'leave-room':
+        handleDisconnect(ws);
+        break;
+
+      default:
+        ws.send(JSON.stringify({ type: 'error', message: `Неизвестный тип сообщения: ${type}` }));
+        break;
+    }
+  });
+
+  ws.on('close', () => {
+    handleDisconnect(ws);
+  });
+});
+
+function broadcast(roomId, data) {
+  const clients = rooms[roomId];
+  if (!clients) return;
+
+  clients.forEach(({ ws }) => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify(data));
+    }
+  });
+}
+
+function handleDisconnect(ws) {
+  const { roomId, nickname } = ws;
+  if (!roomId || !rooms[roomId]) return;
+
+  rooms[roomId] = rooms[roomId].filter(client => client.ws !== ws);
+
+  if (rooms[roomId].length === 0) {
+    delete rooms[roomId];
+  } else {
+    broadcast(roomId, {
+      type: 'user-left',
+      nickname,
+      players: rooms[roomId].map(client => client.nickname),
+    });
+  }
+}
+
+// === API ===
+
 app.post('/register', async (req, res) => {
   const { email, password, nickname } = req.body;
 
@@ -40,7 +183,6 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Авторизация
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -68,7 +210,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Сохранение персонажа
 app.post('/api/save-character', async (req, res) => {
   const { email, character } = req.body;
 
@@ -88,8 +229,6 @@ app.post('/api/save-character', async (req, res) => {
   }
 });
 
-// ✅ Получение выбранного персонажа
-console.log("Регистрируем маршруты /api/save-character и /api/get-character");
 app.get('/api/get-character', async (req, res) => {
   const { email } = req.query;
 
@@ -99,7 +238,7 @@ app.get('/api/get-character', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT character FROM users WHERE email = $1',
+      'SELECT character, nickname FROM users WHERE email = $1',
       [email]
     );
 
@@ -107,13 +246,28 @@ app.get('/api/get-character', async (req, res) => {
       return res.status(404).send('Пользователь не найден');
     }
 
-    res.json({ character: result.rows[0].character });
+    res.json({
+      character: result.rows[0].character,
+      nickname: result.rows[0].nickname
+    });
   } catch (err) {
-    console.error('Ошибка при получении персонажа:', err);
+    console.error('Ошибка при получении персонажа и никнейма:', err);
     res.status(500).send('Ошибка сервера');
   }
 });
 
-app.listen(PORT, () => {
+// === ⬇️ Новый API эндпоинт: получить все карты ===
+
+app.get('/api/cards', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM cards');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Ошибка при получении карт:', err);
+    res.status(500).send('Ошибка при получении карт');
+  }
+});
+
+server.listen(PORT, () => {
   console.log(`Сервер запущен на http://localhost:${PORT}`);
 });

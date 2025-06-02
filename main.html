@@ -8,11 +8,12 @@
 </head>
 <body>
   <div class="top-bar">
-    <button class="theme-btn">☀️</button>
-    <button class="profile-btn">👤</button>
+    <button class="theme-btn">смена темы</button>
+    <button class="profile-btn">профиль</button>
   </div>
 
-  <!-- Выбор персонажа -->
+  <div id="error-box" style="display: none; color: red; text-align: center; margin: 10px; font-weight: bold;"></div>
+
   <div class="center-card" id="character-select">
     <h2>Добро пожаловать! Выберите своего персонажа</h2>
     <div class="character-row">
@@ -27,19 +28,47 @@
     </div>
   </div>
 
-  <!-- Главное меню -->
   <div class="center-card hidden" id="main-menu">
     <h1>Добро пожаловать!</h1>
     <button id="play-btn">Играть</button>
     <a href="rules.html" class="rules-link">Правила</a>
   </div>
 
-  <!-- Режимы игры -->
-  <div class="play-options hidden" id="play-options">
+  <div class="center-card hidden" id="play-options">
     <h2>Выберите режим</h2>
     <button>Соло</button>
-    <button>Мультиплеер</button>
-    <button class="back-btn" id="back-to-main">Назад</button>
+    <button id="multiplayer-btn">Мультиплеер</button>
+    <button class="back-btn">Назад</button>
+  </div>
+
+  <div class="center-card hidden" id="multiplayer-options">
+    <h2>Мультиплеер</h2>
+    <button id="create-room-btn">Создать комнату</button>
+    <button id="join-room-btn">Подключиться к игре</button>
+    <button class="back-btn">Назад</button>
+  </div>
+
+  <div class="center-card hidden" id="create-room-menu">
+    <h2>Создание комнаты</h2>
+    <input type="text" id="room-name-input" placeholder="Введите имя комнаты" />
+    <button id="confirm-create-room-btn">Подтвердить</button>
+    <button class="back-btn">Назад</button>
+  </div>
+
+  <div class="center-card hidden" id="join-room-menu">
+    <h2>Присоединиться к комнате</h2>
+    <input type="text" id="join-room-input" placeholder="Введите ID комнаты" />
+    <button id="confirm-join-room-btn">Подключиться</button>
+    <button class="back-btn">Назад</button>
+  </div>
+
+  <div class="center-card hidden" id="room-lobby">
+    <h2>Комната: <span id="room-name-display"></span></h2>
+    <div id="players-list">
+      <p>Ожидание игроков...</p>
+    </div>
+    <button id="start-game-btn">Начать игру</button>
+    <button id="leave-room-btn" class="back-btn">Выйти</button>
   </div>
 
   <script src="main.js"></script>
